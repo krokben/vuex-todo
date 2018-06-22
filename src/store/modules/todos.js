@@ -6,6 +6,11 @@ const state = [
   {id: 3, name: 'Third Todo', completed: true}
 ];
 
+const getters = {
+  completedTodos: state => state.filter(todo => todo.completed),
+  remainingTodos: state => state.filter(todo => !todo.completed)
+};
+
 const actions = {
   [ADD_TODO](context, todo) {
     context.commit(ADD_TODO, todo);
@@ -20,13 +25,14 @@ const mutations = {
     state.push(todo)
   },
   [COMPLETE_TODO](state, id) {
-    const idx = state.findIndex(todo => todo.id === id);
-    state[idx] = { ...state[idx], completed: !state[idx].completed }
+    const todo = state.find(todo => todo.id === id);
+    todo.completed = !todo.completed;
   }
 };
 
 export default {
   state,
+  getters,
   actions,
   mutations
 };
