@@ -1,4 +1,4 @@
-import { ADD_TODO } from '../types';
+import { ADD_TODO, COMPLETE_TODO } from '../types';
 
 const state = [
   {id: 1, name: 'First Todo', completed: false},
@@ -9,12 +9,19 @@ const state = [
 const actions = {
   [ADD_TODO](context, todo) {
     context.commit(ADD_TODO, todo);
+  },
+  [COMPLETE_TODO](context, id) {
+    context.commit(COMPLETE_TODO, id);
   }
 };
 
 const mutations = {
   [ADD_TODO](state, todo) {
     state.push(todo)
+  },
+  [COMPLETE_TODO](state, id) {
+    const idx = state.findIndex(todo => todo.id === id);
+    state[idx] = { ...state[idx], completed: !state[idx].completed }
   }
 };
 

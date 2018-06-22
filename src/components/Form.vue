@@ -12,13 +12,12 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { ADD_TODO, COMPLETE_TODO } from '../store/types';
+import { ADD_TODO } from '../store/types';
 
 export default {
   methods: {
     ...mapActions({
-      addTodo: ADD_TODO,
-      completeTodo: COMPLETE_TODO
+      addTodo: ADD_TODO
     })
   }
 };
