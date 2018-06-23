@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="scss" global>
+<style>
   .dark-theme {
     background: #333;
     color: #fff;
