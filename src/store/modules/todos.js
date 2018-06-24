@@ -6,12 +6,12 @@ const state = [
   {id: 3, name: 'Third Todo', completed: true}
 ];
 
-const getters = {
+export const getters = {
   completedTodos: state => state.filter(todo => todo.completed),
   remainingTodos: state => state.filter(todo => !todo.completed)
 };
 
-const actions = {
+export const actions = {
   [ADD_TODO](context, todo) {
     context.commit(ADD_TODO, todo);
   },
@@ -20,9 +20,9 @@ const actions = {
   }
 };
 
-const mutations = {
+export const mutations = {
   [ADD_TODO](state, todo) {
-    state.push(todo)
+    state.push(todo);
   },
   [COMPLETE_TODO](state, id) {
     const todo = state.find(todo => todo.id === id);
