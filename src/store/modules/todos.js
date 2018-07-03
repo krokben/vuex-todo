@@ -1,10 +1,7 @@
-import { ADD_TODO, COMPLETE_TODO } from '../types';
+import axios from 'axios';
+import { ADD_TODO, COMPLETE_TODO, FETCH_TODOS } from '../types';
 
-const state = [
-  {id: 1, name: 'First Todo', completed: false},
-  {id: 2, name: 'Second Todo', completed: false},
-  {id: 3, name: 'Third Todo', completed: true}
-];
+const state = [];
 
 export const getters = {
   completedTodos: state => state.filter(todo => todo.completed),
@@ -13,11 +10,20 @@ export const getters = {
 
 export const actions = {
   [ADD_TODO](context, todo) {
-    context.commit(ADD_TODO, todo);
+    axios.post(`http://localhost:3000/todos`, todo)
+      .then(response => context.commit(ADD_TODO, todo))
+      .catch(error => console.log(error));
   },
-  [COMPLETE_TODO](context, id) {
-    context.commit(COMPLETE_TODO, id);
-  }
+  [COMPLETE_TODO](context, payload) {
+    axios.put(`http://localhost:3000/todos/${payload.id}`, { changes: payload.changes })
+      .then(response => context.commit(COMPLETE_TODO, payload.id))
+      .catch(error => console.log(error));
+  },
+  [FETCH_TODOS](context) {
+    axios.get(`http://localhost:3000/todos`)
+      .then(response => context.commit(FETCH_TODOS, response.data))
+      .catch(error => console.log(error));
+  },
 };
 
 export const mutations = {
@@ -25,14 +31,17 @@ export const mutations = {
     state.push(todo);
   },
   [COMPLETE_TODO](state, id) {
-    const todo = state.find(todo => todo.id === id);
+    const todo = state.find(todo => todo._id === id);
     todo.completed = !todo.completed;
-  }
+  },
+  [FETCH_TODOS](state, todos) {
+    todos.forEach(todo => state.push(todo));
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

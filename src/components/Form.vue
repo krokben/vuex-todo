@@ -1,7 +1,7 @@
 <template>
   <form
     @submit.prevent="
-      addTodo({id: 123, name: $event.target.todo.value, completed: false})
+      addTodo({text: $event.target.todo.value, category: 'shopping'})
     "
   >
     <label for="todo"></label>
@@ -17,7 +17,7 @@ import { ADD_TODO } from '../store/types';
 export default {
   methods: {
     ...mapActions({
-      addTodo: ADD_TODO
+      addTodo: ADD_TODO,
     })
   }
 };

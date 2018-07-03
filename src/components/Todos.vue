@@ -2,20 +2,20 @@
   <ul>
     <h2>Don't forget</h2>
     <li v-for="todo in remainingTodos">
-      <span>{{ todo.name }}</span>
+      <span>{{ todo.text }}</span>
       <input
         type="checkbox"
         v-bind:checked="todo.completed"
-        @click="completeTodo(todo.id)"
+        @click="completeTodo({ id: todo._id, changes: {completed: true} })"
       >
     </li>
     <h2>Completed</h2>
     <li v-for="todo in completedTodos">
-      <span>{{ todo.name }}</span>
+      <span>{{ todo.text }}</span>
       <input
         type="checkbox"
         v-bind:checked="todo.completed"
-        @click="completeTodo(todo.id)"
+        @click="completeTodo({ id: todo._id, changes: {completed: false} })"
       >
     </li>
   </ul>
@@ -23,18 +23,22 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { COMPLETE_TODO } from '../store/types';
+import { COMPLETE_TODO, FETCH_TODOS } from '../store/types';
 
 export default {
+  created() {
+    this.fetchTodos();
+  },
   computed: {
     ...mapGetters([
       'completedTodos',
-      'remainingTodos'
+      'remainingTodos',
     ])
   },
   methods: {
     ...mapActions({
-      completeTodo: COMPLETE_TODO
+      completeTodo: COMPLETE_TODO,
+      fetchTodos: FETCH_TODOS,
     })
   }
 };
