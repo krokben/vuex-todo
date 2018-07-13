@@ -17,13 +17,19 @@
         v-bind:checked="todo.completed"
         @click="completeTodo({ id: todo._id, changes: {completed: false} })"
       >
+      <span
+        class="todo-delete-button"
+        @click="deleteTodo({ id: todo._id })"
+      >
+        🗑️
+      </span>
     </li>
   </ul>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { COMPLETE_TODO, FETCH_TODOS } from '../store/types';
+import { COMPLETE_TODO, DELETE_TODO, FETCH_TODOS } from '../store/types';
 
 export default {
   created() {
@@ -38,8 +44,15 @@ export default {
   methods: {
     ...mapActions({
       completeTodo: COMPLETE_TODO,
+      deleteTodo: DELETE_TODO,
       fetchTodos: FETCH_TODOS,
     })
   }
 };
 </script>
+
+<style>
+  .todo-delete-button:hover {
+    cursor: pointer;
+  }
+</style>

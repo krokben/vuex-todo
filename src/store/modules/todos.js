@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_TODO, COMPLETE_TODO, FETCH_TODOS } from '../types';
+import { ADD_TODO, COMPLETE_TODO, DELETE_TODO, FETCH_TODOS } from '../types';
 
 const state = [];
 
@@ -19,6 +19,11 @@ export const actions = {
       .then(response => context.commit(COMPLETE_TODO, payload.id))
       .catch(error => console.log(error));
   },
+  [DELETE_TODO](context, payload) {
+    axios.delete(`http://localhost:3000/todos/${payload.id}`)
+      .then(response => context.commit(DELETE_TODO, payload.id))
+      .catch(error => console.log(error));
+  },
   [FETCH_TODOS](context) {
     axios.get(`http://localhost:3000/todos`)
       .then(response => context.commit(FETCH_TODOS, response.data))
@@ -33,6 +38,10 @@ export const mutations = {
   [COMPLETE_TODO](state, id) {
     const todo = state.find(todo => todo._id === id);
     todo.completed = !todo.completed;
+  },
+  [DELETE_TODO](state, id) {
+    const idx = state.indexOf(state.find(todo => todo._id === id));
+    state.splice(idx, 1);
   },
   [FETCH_TODOS](state, todos) {
     todos.forEach(todo => state.push(todo));
